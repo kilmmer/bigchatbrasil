@@ -16,9 +16,14 @@ COPY . .
 # Exponha a porta onde o aplicativo estará em execução
 EXPOSE 4000
 
+
+ENV DATABASE_URL="postgresql://postgres:postgres1q2w3e@postgres:5432/bigchatbrasil?schema=public"
+
 RUN chmod 755 /app/backend
 RUN npm install -g prisma
+
 RUN npx prisma generate
+RUN npx prisma migrate dev
 
 # Comando para iniciar o aplicativo
-CMD ["npx", "prisma", "migrate", "dev", "npm", "start"]
+CMD [ "npm", "start"]

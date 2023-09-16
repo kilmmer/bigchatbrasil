@@ -1,4 +1,8 @@
-version: "3"
+version: "3.8"
+
+networks:
+    mynet:
+        driver: bridge
 
 services:
     postgres:
@@ -12,6 +16,8 @@ services:
             - "5432:5432"
         volumes:
             - postgres_data:/var/lib/postgresql/data
+        networks:
+            - mynet
 
     frontend:
         build:
@@ -36,8 +42,10 @@ services:
         ports:
             - "4000:4000"
         environment:
-            DATABASE_URL: postgresql://postgres:postgres1q2w3e@localhost:5432/bigchatbrasil?schema=public
+            DATABASE_URL: postgresql://postgres:postgres1q2w3e@postgres:5432/bigchatbrasil?schema=public
         command: "npm start"
+        networks:
+            - mynet
 
 volumes:
     postgres_data:
