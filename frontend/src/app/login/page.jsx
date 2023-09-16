@@ -6,7 +6,7 @@ export default function Login() {
 	const router = useRouter()
 
 	const handleSubmit = (e) => {
-		console.log(e)
+		e
 		e.stopPropagation()
 
 		router.push("/home")

@@ -2,10 +2,12 @@
 FROM node:18.17.1
 
 # Defina o diretório de trabalho no contêiner
-WORKDIR /app/backend
+WORKDIR /app/frontend
 
 # Copie o package.json e o yarn.lock para o contêiner
 COPY package*.json ./
+
+RUN chmod 777 /app/frontend
 
 # Instale as dependências
 RUN npm install
@@ -13,12 +15,13 @@ RUN npm install
 # Copie o código-fonte para o contêiner
 COPY . .
 
-# Exponha a porta onde o aplicativo estará em execução
-EXPOSE 4000
+# Compile o frontend (substitua este comando pelo comando real usado para compilar o frontend)
+RUN npm run build
 
-RUN chmod 755 /app/backend
-RUN npm install -g prisma
-RUN npx prisma generate
+RUN touch /app/frontend/.next/
+
+# Exponha a porta onde o aplicativo estará em execução
+EXPOSE 3000
 
 # Comando para iniciar o aplicativo
-CMD ["npx", "prisma", "migrate", "dev", "npm", "start"]
+CMD ["npm", "start"]

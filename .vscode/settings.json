@@ -1,14 +1,14 @@
 {
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "0.0.0.0",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "docker-pg",
-      "username": "root",
-      "database": "irrah",
-      "password": "123"
-    }
-  ]
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "0.0.0.0",
+			"port": 5432,
+			"driver": "PostgreSQL",
+			"name": "docker-pg",
+			"username": "postgres",
+			"database": "bigchatbrasil",
+			"password": "postgres1q2w3e"
+		}
+	]
 }

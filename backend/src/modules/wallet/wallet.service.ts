@@ -103,6 +103,13 @@ export class WalletService {
   async getBalance(_customerId: number) {
     return await this.repository.wallet.findFirst({
       where: { customerId: +_customerId },
+      select: { balance: true },
+    });
+  }
+
+  async getWallet(_customerId: number) {
+    return await this.repository.wallet.findFirst({
+      where: { customerId: +_customerId },
     });
   }
 }

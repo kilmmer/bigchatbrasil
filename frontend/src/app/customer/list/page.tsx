@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { getCustomers } from "../crud.customer"
+import { Customer, getCustomers } from "../crud.customer"
 import Modal from "@/app/components/modal"
 
 export default function CustomerListPage() {
@@ -10,29 +10,29 @@ export default function CustomerListPage() {
 	const [newPlan, setNewPlan] = useState("")
 	const [creditAmount, setCreditAmount] = useState("")
 	const [newLimit, setNewLimit] = useState("")
-	const [customerSelected, setCustomerSelected] = useState({})
+	const [customerSelected, setCustomerSelected] = useState<Customer | null>(
+		null
+	)
 	const [wallet, setWallet] = useState({})
 
 	const isPrepaid = false
-	const handlePlanChange = (e) => {
+	const handlePlanChange = (e: any) => {
 		setNewPlan(e.target.value)
 	}
 
-	const handleCreditAmountChange = (e) => {
+	const handleCreditAmountChange = (e: any) => {
 		setCreditAmount(e.target.value)
 	}
 
-	const handleLimitChange = (e) => {
+	const handleLimitChange = (e: any) => {
 		setNewLimit(e.target.value)
 	}
 
-	const handleFormSubmit = (e) => {
-		e.preventDefault()
-		// Aqui você pode adicionar a lógica para enviar as alterações para o backend
-		// Por exemplo, fazer uma requisição para alterar o plano ou adicionar crédito
-		console.log("Novo plano:", newPlan)
-		console.log("Novo crédito:", creditAmount)
-		console.log("Novo limite:", newLimit)
+	const handleFormSubmit = (e: any) => {
+		e.preventDefault()("Novo plano:", newPlan)(
+			"Novo crédito:",
+			creditAmount
+		)("Novo limite:", newLimit)
 		toggleModal() // Fechar o modal após a submissão
 	}
 
@@ -47,23 +47,32 @@ export default function CustomerListPage() {
 	}, [])
 
 	function toggleModal() {
-		console.log(showModal)
 		setShowModal(!showModal)
 	}
 
 	useEffect(() => {
-		async function fetchWalletCustomer(customerId) {
+		customerSelected
+	}, [customerSelected])
+
+	useEffect(() => {
+		async function fetchWalletCustomer(customerId: number) {
 			const result = await fetch(
-				`http://localhost:80/customer/${customerId}/get-wallet`
+				`http://localhost:4000/customer/${customerId}/get-wallet`
 			)
 
-			if (result.ok) {
+			if (result && result.ok) {
 				return result.json()
 			}
 		}
 
-		setWallet
+		if (customerSelected && customerSelected.id) {
+			setWallet(fetchWalletCustomer(customerSelected["id"]))
+		}
 	}, [customerSelected])
+
+	function changeCustomer(customer: Customer) {
+		setCustomerSelected(customer)
+	}
 
 	return (
 		<div className="container mx-auto px-8 bg-slate-100 ">
@@ -82,7 +91,7 @@ export default function CustomerListPage() {
 					</tr>
 				</thead>
 				<tbody className="overflow-x-hidden overflow-y-auto h-52">
-					{customers.map((customer, index) => (
+					{customers.map((customer: Customer, index: number) => (
 						<tr key={index}>
 							<td className="border py-2">{customer.id}</td>
 							<td className="border py-2">{customer.name}</td>
@@ -101,10 +110,10 @@ export default function CustomerListPage() {
 							<td className="border py-2">
 								<button
 									className="bg-green-500 hover:bg-green-700 text-white font-bold  text-xs py-1 px-2 rounded-full mr-2"
-									onClick={() =>
-										toggleModal() &&
-										setCustomerSelected(customer)
-									}>
+									onClick={() => {
+										toggleModal()
+										changeCustomer(customer)
+									}}>
 									Carteira
 								</button>
 								<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold  text-xs py-1 px-2 rounded-full mr-2">
@@ -131,7 +140,7 @@ export default function CustomerListPage() {
 							<div className="modal-header flex justify-between items-center">
 								<h3 className="text-lg font-semibold">
 									Editar Carteira -{" "}
-									{customerSelected.business_name}
+									{customerSelected?.business_name || ""}
 								</h3>
 								<button
 									className="modal-close text-2xl"
@@ -152,14 +161,11 @@ export default function CustomerListPage() {
 											className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 											value={newPlan}
 											onChange={handlePlanChange}>
-											<option value="plano1">
-												Plano 1
+											<option value="1">
+												Plano Pré-pago
 											</option>
-											<option value="plano2">
-												Plano 2
-											</option>
-											<option value="plano3">
-												Plano 3
+											<option value="2">
+												Plano Pós-pago
 											</option>
 										</select>
 									</div>

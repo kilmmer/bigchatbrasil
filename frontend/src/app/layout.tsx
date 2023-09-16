@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation"
 
 // const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
+const metadata = {
 	title: "Big Chat Brasil",
 	description: "Teste",
 }

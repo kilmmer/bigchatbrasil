@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Put,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
@@ -91,7 +93,16 @@ export class CustomerController {
   }
 
   @Get('/:id/get-wallet')
-  async getBalance(@Param('id') customerId) {
-    return await this.walletService.getBalance(+customerId);
+  async getWallet(@Param('id') customerId) {
+    const wallet = await this.walletService.getWallet(+customerId);
+
+    if (!wallet) {
+      throw new HttpException(
+        'O cliente não tem carteira cadastrada.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return wallet;
   }
 }

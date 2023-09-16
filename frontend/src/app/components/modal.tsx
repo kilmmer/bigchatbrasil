@@ -1,6 +1,16 @@
 import React, { useState } from "react"
 
-const Modal = ({ isOpen, toggleModal, title, children }) => {
+const Modal = ({
+	isOpen,
+	toggleModal,
+	title,
+	children,
+}: {
+	isOpen: boolean
+	toggleModal: () => void
+	title: string
+	children: React.ReactNode
+}) => {
 	const displayClass = isOpen ? "block" : "hidden"
 
 	return (

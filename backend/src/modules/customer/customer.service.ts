@@ -19,7 +19,7 @@ export class CustomerService {
 
       return newCustomer;
     } catch (error) {
-      console.log(error);
+      error;
       throw new HttpException(
         'Erro ao cadastrar novo cliente. ' + error,
         HttpStatus.BAD_REQUEST,

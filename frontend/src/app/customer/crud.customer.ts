@@ -1,5 +1,5 @@
 export interface Customer {
-	id: number
+	id?: number
 	name: string
 	email: string
 	telephone: string
@@ -10,16 +10,16 @@ export interface Customer {
 }
 
 export const getCustomers = async () => {
-	const response = await fetch("http://localhost:80/customer")
+	const response = await fetch("http://localhost:4000/customer")
 		.then((r) => r.json())
 		.then((res) => res)
 
 	return response
 }
 
-export const addCustomer = async (customer) => {
+export const addCustomer = async (customer: Customer) => {
 	try {
-		const response = await fetch("http://localhost:80/customer", {
+		const response = await fetch("http://localhost:4000/customer", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -36,14 +36,14 @@ export const addCustomer = async (customer) => {
 }
 
 export const updateCustomer = async (id: number, updatedCustomer: Customer) => {
-	return await fetch("http://localhost:80/customer/" + id, {
+	return await fetch("http://localhost:4000/customer/" + id, {
 		method: "PATCH",
 		body: JSON.stringify(updatedCustomer),
 	})
 }
 
 export const deleteCustomer = async (id: number) => {
-	return await fetch("http://localhost:80/customer/" + id, {
+	return await fetch("http://localhost:4000/customer/" + id, {
 		method: "DELETE",
 	})
 }

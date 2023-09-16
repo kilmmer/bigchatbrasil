@@ -3,29 +3,31 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { addCustomer } from "../crud.customer"
 
+interface FormDataObject {
+	[key: string]: string
+}
+
 export default function CreateCustomerPage() {
 	const router = useRouter()
 
-	const handleCreateCustomer = async (event) => {
+	const handleCreateCustomer = async (event: any) => {
 		const target = event.target
 		event.preventDefault()
 
 		const form = new FormData(target)
-		const data = {}
-		for (let [key, value] of form.entries()) {
+		const data: any = {}
+
+		Array.from(form.entries()).forEach(([key, value]) => {
 			data[key] = value
-		}
+		})
 
-		const id = Date.now()
 		const newCustomer = { ...data }
-		const result = await addCustomer(newCustomer)
+		const result: any = await addCustomer(newCustomer)
 
-		console.log(result)
-
-		if (result.ok) {
+		if (result && result.ok) {
 			router.push("/customer")
 		} else {
-			alert("Erro: " + result.statusText)
+			alert("Erro: " + result["statusText"])
 		}
 		return false
 	}

@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres1q2w3e
+            POSTGRES_DB: bigchatbrasil
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+    frontend:
+        build:
+            context: ./frontend
+        image: node:latest
+        container_name: frontend
+        working_dir: /app/frontend
+        volumes:
+            - ./frontend:/app/frontend
+        ports:
+            - "3000:3000"
+        command: "npm start"
+
+    backend:
+        build:
+            context: ./backend
+        image: node:latest
+        container_name: backend
+        working_dir: /app/backend
+        volumes:
+            - ./backend:/app/backend
+        ports:
+            - "4000:4000"
+        environment:
+            DATABASE_URL: postgresql://postgres:postgres1q2w3e@localhost:5432/bigchatbrasil?schema=public
+        command: "npm start"
+
+volumes:
+    postgres_data:
