@@ -15,4 +15,8 @@ describe('CustomerService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should be mounted', () => {
+    expect(module)
+  })
 });
